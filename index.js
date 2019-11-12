@@ -5,6 +5,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended:false}));
 
+const searchRouter = require('./routes/search');
+app.use('/search', searchRouter);
+
+
+
 var serverPort = 3000;
 var serverIpAddress = '127.0.0.1';
 
