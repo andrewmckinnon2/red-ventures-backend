@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./bulma.css" />
+    <link rel="stylesheet" href="custom_style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Shrikhand&display=swap" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+    <script src="./home.js"></script>
+    <script src="./axios.js"></script>
+    <script src="./config.js"></script>
+    <script src="./search.js"></script>
+    <title>Stack Is Back Bitch</title>
+</head>
+
+<body>
+    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <!-- <a class="navbar-item" href="https://bulma.io">
+                        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+                      </a> -->
+
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a href="./index.html" class="navbar-item">
+                    Home
+                </a>
+
+                <a class="navbar-item">
+                    Popular Near Me
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light">
+                            Log in
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <br><br>
+    <section class="section">
+        <div class="container">
+            <div class="content has-text-centered">
+                <h1 id="bigtitleguy" class="title has-text-info is-family-secondary">Get Started</h1>
+                <h5 class="subtitle has-text-grey is-italic">Select a streaming platform to explore.</h5>
+            </div>
+            <!-- <div class="tabs is-medium is-centered">
+                    <ul>
+                        <li><a>Amazon Prime</a></li>
+                        <li><a>HBO</a></li>
+                        <li><a>Netflix</a></li>
+                    </ul> 
+                </div> -->
+            <div class="columns is-multiline">
+                <div id="primepic" class="column">
+                    <img src="../images/amazonprime.jpg">
+                </div>
+                <div id="hbopic" class="column">
+                    <img src="../images/hbo.jpg">
+                </div>
+                <div id="netflixpic" class="column">
+                    <img src="../images/netflix.png">
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <form>
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                    <input id="search_string" class="input" type="text" placeholder="Search">
+                                    <span class="icon is-left">
+                                      <i class="fas fa-search" aria-hidden="true"></i>
+                                    </span>
+                                  </p>
+                        </div>
+
+                        <!-- <div class="select is-multiple">
+                                    <select id="streaming_platform" multiple size="4">
+                                      <option value="platform">All Platforms</option>
+                                      <option value="Netflix">Netflix</option>
+                                      <option value="HBO">HBO</option>
+                                      <option value="Amazon Prime">Amazon Prime</option>
+                                    </select>
+                            </div> -->
+
+                        <nav class="panel">
+                            <p class="panel-heading">
+                                Platforms
+                            </p>
+                            <div class="panel-block">
+                                <p class="control">
+                                    <label class="checkbox">
+                                        <input id="netflixcheck" type="checkbox">
+                                        Netflix
+                                    </label>
+                                </p>
+                            </div>
+                            <div class="panel-block">
+                                <p class="control">
+                                    <label class="checkbox">
+                                        <input id="hbocheck" type="checkbox">
+                                        HBO
+                                    </label>
+                                </p>
+                            </div>
+                            <div class="panel-block">
+                                <p class="control">
+                                    <label class="checkbox">
+                                        <input id="primecheck" type="checkbox">
+                                        Amazon Prime
+                                    </label>
+                                </p>
+                            </div>
+                        </nav>
+                        <div class="select is-rounded">
+                            <select id="rating">
+                                <option>Rating</option>
+                                <option>G</option>
+                                <option>PG</option>
+                                <option>PG-13</option>
+                                <option>R</option>
+                                <option>NR</option>
+                            </select>
+                        </div>
+                        <div class="select is-rounded">
+                            <select id="language">
+                                <option>Language</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                                <option>German</option>
+                                <option>English</option>
+                                <option>Korean</option>
+                                <option>Hindi</option>
+                            </select>
+                        </div>
+                        <div class="select is-rounded">
+                            <select id="sorting">
+                                <option>Sort by...</option>
+                                <option>Popularity</option>
+                                <option>IMDB Rating</option>
+                            </select>
+                        </div> <br><br>
+                        <div class="field">
+                                <div class="control">
+                                    <button id="submitbutton" type="button" class="button is-link">Search</button>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
