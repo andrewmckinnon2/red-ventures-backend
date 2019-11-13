@@ -1,14 +1,20 @@
 $(document).ready(() => {
     $("#submitbutton").on("click", () => {
         console.log("loaded search.js");
-        search("");
+        search();
     });
     $("#primepic").on("click", () => {
-        search("prime");
+        searchByPlatform("prime");
+    });
+    $("#hbopic").on("click", () => {
+        searchByPlatform("hbo");
+    });
+    $("#netflixpic").on("click", () => {
+        searchByPlatform("netflix");
     });
 }); 
 
-async function search(platform) {
+async function search() {
     try {
         var URL;
         if (isProd) {
@@ -21,6 +27,7 @@ async function search(platform) {
         let lang = $("#language").val();
         
         let plats = [];
+        
         if ($("#netflixcheck").prop("checked") == true) {
             plats.push("netflix");
         } 
@@ -42,6 +49,42 @@ async function search(platform) {
                 streamingPlatforms: plats, 
                 searchString: search,
                 sorting: sort
+            }
+        });
+        console.log('axios request should have been sent');
+        return result;
+    } catch (error) {
+        return error;
+    }
+}
+
+async function searchByPlatform(platform) {
+    try {
+        var URL;
+        if (isProd) {
+            URL = prodURL;
+        } else {
+            URL = devURL;
+        }
+        
+        let plats = [];
+        if (platform == "prime") {
+            plats.push("amazon_prime");
+        } else if (platform == "hbo") {
+            plats.push("hbo");
+        } else if (platform == "netflix") {
+            plats.push("netflix")
+        } 
+
+        const result = await axios({
+            method: 'get',
+            url: URL + 'search/',
+            params: {
+                rating: null,
+                language: null,
+                streamingPlatforms: plats, 
+                searchString: null,
+                sorting: null
             }
         });
         console.log('axios request should have been sent');

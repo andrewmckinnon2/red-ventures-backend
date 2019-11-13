@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="custom_style.css" />
     <link href="https://fonts.googleapis.com/css?family=Shrikhand&display=swap" rel="stylesheet">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+    <script src="./axios.js"></script>
+    <script src="./config.js"></script>
+    <script src="./search.js"></script>
+    <script src="./results.js"></script>
+    
     <title>Stack Is Back Bitch</title>
 </head>
  
@@ -102,6 +108,11 @@
                     <option>Popularity</option>
                     <option>IMDB Rating</option>
                 </select>
+            </div> <br> <br>
+            <div class="field">
+                <div class="control">
+                    <button id="submitbutton" type="button" class="button is-link">Search</button>
+                </div>
             </div>
         </form>
     </div>
@@ -113,7 +124,7 @@
                 <div class="tile is-vertical is-8">
                     <div class="tile">
                         <div class="tile is-parent is-vertical">
-                            <article class="tile is-child notification ">
+                            <article id="1" class="tile is-child notification ">
                                 <p class="title">Movie Title</p>
                                 <p class="subtitle">Available on: </p>
                                 <p>Whatever the fuck else</p>
@@ -121,7 +132,7 @@
 
                         </div>
                         <div class="tile is-parent">
-                            <article class="tile is-child notification ">
+                            <article id="2" class="tile is-child notification ">
                                 <p class="title">Movie Title</p>
                                 <p class="subtitle">Available on: </p>
                             </article>
@@ -130,7 +141,7 @@
 
                 </div>
                 <div class="tile is-parent">
-                    <article class="tile is-child notification ">
+                    <article id="3" class="tile is-child notification ">
 
                         <p class="title">Movie Title</p>
                         <p class="subtitle">Available on: </p>

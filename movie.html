@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="custom_style.css" />
     <link href="https://fonts.googleapis.com/css?family=Shrikhand&display=swap" rel="stylesheet">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+    <script src="./axios.js"></script>
+    <script src="./config.js"></script>
+    <script src="./results.js"></script>
+    <script src="./post_review.js"></script>
     <title>Stack Is Back Bitch</title>
 </head>
 
@@ -108,7 +113,7 @@
                 </div>
                 <div class="field">
                     <p class="control has-icons-left has-icons-right">
-                        <input id="email" class="input" type="email" placeholder="Email">
+                        <input id="email"  pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-.]+.edu$/" class="input" placeholder="Email" type="email" required>
                         <!-- https://html5-tutorial.net/form-validation/validating-email/ -->
                         <span class="icon is-small is-left">
                             <i class="fas fa-envelope"></i>
@@ -124,12 +129,17 @@
                     </p>
                 </div>
 
+                <div class="control">
+                    <label><strong>Rating: </strong><span id="current">5</span></label> <br>
+                    <span>1</span><input id="slider" type="range" min=1 max=10><span>10</span>
+                  </div> <br> 
+
                 <nav id="reviewpanel" class="panel">
                     <p class="panel-heading">
                         What platform did you watch this movie on?
                     </p>
-                    <div id="reviewplatform" class="select">
-                        <select>
+                    <div class="select">
+                        <select id="reviewplatform">
                           <option>Netflix</option>
                           <option>HBO</option>
                           <option>Amazon Prime</option>
@@ -139,7 +149,7 @@
                     <br><br>
                     <div class="field">
                             <div class="control">
-                                <button class="button is-link">Submit</button>
+                                <button id="reviewsubmit" class="button is-link" type="button">Submit</button>
                             </div>
                         </div>
                 </nav>
