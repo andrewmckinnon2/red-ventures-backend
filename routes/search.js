@@ -15,7 +15,11 @@ router.get('/', async (req, res) => {
     let searchString = req.body.searchString; //actual string entered by the user
     let sorting = req.body.sorting; //either popularity or IMDB rating
 
+    //languages are encoded as en, ko, hi
+
     let database = new Database(config.database);
+
+    console.log("inside of search request handler");
 
     //write to database the search
 
