@@ -9,11 +9,21 @@ const router = express.Router();
 router.get('/', async (req, res) => {
 
     //parse out parts of the request
-    let rating = req.body.rating; //rating - pg-13, R, etc.
-    let language = req.body.language; //language - english, korean, hindi
-    let streamingPlatforms = req.body.streaming; //array of hbo, netflix, amazon prime
-    let searchString = req.body.searchString; //actual string entered by the user
-    let sorting = req.body.sorting; //either popularity or IMDB rating
+    let rating = req.query.rating; //rating - pg-13, R, etc.
+    let language = req.query.language; //language - english, korean, hindi
+    let streamingPlatforms = req.query.streamingPlatforms; //array of hbo, netflix, amazon prime
+    let searchString = req.query.searchString; //actual string entered by the user
+    let sorting = req.query.sorting; //either popularity or IMDB rating
+
+    console.log("rating: " + rating);
+    console.log("language: " + language);
+    console.log("streamingPlatforms: " + streamingPlatforms);
+    console.log("searchString: " + searchString);
+    console.log("sorting:  " + sorting);
+
+    res.status(200).json({
+        message: "success",
+    });
 
     //languages are encoded as en, ko, hi
 
