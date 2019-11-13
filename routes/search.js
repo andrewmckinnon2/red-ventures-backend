@@ -1,20 +1,37 @@
 const express = require('express');
-
+const Database = require('../db');
+const axios = require('axios');
+const config = require('../config');
 
 const router = express.Router();
 
 //api endpoint for movie searches
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
 
     //parse out parts of the request
-    /*
-    Params: Genre, Rating (R, PG-13, etc, y’all know ratings), Language (original language), Production platform, Streaming platform, Ppl on my campus who have watched/reviewed ?? Maybe
-    */
-    let rating = req.body.rating;
-    let language = req.body.language;
-    let streamingPlatform = req.body.streaming;
-    let searchString = req.body.searchString;
-    let sorting = req.body.sorting;
+    let rating = req.body.rating; //rating - pg-13, R, etc.
+    let language = req.body.language; //language - english, korean, hindi
+    let streamingPlatforms = req.body.streaming; //array of hbo, netflix, amazon prime
+    let searchString = req.body.searchString; //actual string entered by the user
+    let sorting = req.body.sorting; //either popularity or IMDB rating
 
-    
+    let database = new Database(config.database);
+
+    //write to database the search
+
+    //get from database the ratings associated with our platform
+
+    //get results from their api
+    axios.get(config.getMoviesUrl)
+    .then(response => {
+        //filter out by rating
+        if(rating){
+
+        }
+    }).catch(error => {
+        console.log("error:");
+        console.log(error);
+    })
 })
+
+module.exports = router;

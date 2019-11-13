@@ -1,5 +1,4 @@
 var mysql = require('mysql');
-var configuration = require('../config');
 
 class Database {
     constructor( config ) {
