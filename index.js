@@ -6,7 +6,17 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({extended:false}));
 
 const searchRouter = require('./routes/search');
+const clickBannerRouter = require('./routes/click-banner');
+const movieRouter = require('./routes/movie');
+const reviewRouter = require('./routes/review');
+const platformAnalyticsRouter = require('./routes/platform-analytics');
+
+
 app.use('/search', searchRouter);
+app.use('/click-banner', clickBannerRouter);
+app.use('/movie', movieRouter);
+app.use('/review', reviewRouter);
+app.use('/streaming-platform-analytics', platformAnalyticsRouter);
 
 
 
