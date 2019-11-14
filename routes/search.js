@@ -8,6 +8,7 @@ const router = express.Router();
 
 //api endpoint for movie searches
 router.get('/', async (req, res, next) => {
+    console.log("inside of search.js");
 
     //parse out parts of the request
     let rating = req.query.rating; //rating - pg-13, R, etc.
@@ -39,71 +40,134 @@ router.get('/', async (req, res, next) => {
         })
         next();
     }
+    console.log("result of database query:");
+    console.log(result);
 
-    //get results from their api
-    let searchResults = [];
-    axios.get(config.getMoviesUrl)
-    .then(async (response) => {
-        moviesAndShows = response.data;
-        
-        searchResults = moviesAndShows.filter((content) => {
-            //filter by rating
-            if(rating && content.rating != rating){ return false; }
-            //filter by language
-            if(language != null && content.original_language.localeCompare(language) != 0){ return false; }
-            //filter by title
-            if(!content.title.includes(searchString)){ return false; }
-            //filter by streaming platform 
-            if(streamingPlatforms && streamingPlatforms.length != 0){
-                let foundStreamingPlatform = false;
-                for(let i = 0; i < streamingPlatforms.length; i++){
-                    for(let j = 0; j < moviesAndShows.length; j++){
-                        if(streamingPlatforms[i] == moviesAndShows[j]){
-                            foundStreamingPlatform = true;
-                        }
+    //get movie search results from their api
+    let movieSearchResults;
+    try{
+        movieSearchResults = await axios.get(config.getMoviesUrl);
+        movieSearchResults = movieSearchResults.data;
+    } catch(e) {
+        console.log("error occurred:");
+        console.log(e);
+        res.status(500).json({
+            message: 'error encountered'
+        })
+        next();
+    }
+
+    //get show search results from their api
+    let showSearchResults;
+    try{
+        showSearchResults = await axios.get(config.getShowsUrl);
+        showSearchResults = showSearchResults.data;
+    } catch(e) {
+        console.log("error occurred:");
+        console.log(e);
+        res.status(500).json({
+            message: 'error encountered'
+        })
+        next();
+    }
+
+
+    let showsAndMovies = movieSearchResults.concat(showSearchResults);
+
+    searchResults = showsAndMovies.filter((content) => {
+        //filter by rating
+        if(rating != null && content.rating && ('rating' in content) && content.rating != rating){ return false; }
+        //filter by language
+        if(language != null && ('original_language' in content) && content.original_language && content.original_language.localeCompare(language) != 0){ return false; }
+        //filter by title
+        if(('title' in content) && !content.title.includes(searchString)){ return false; }
+        //filter by streaming platform 
+        if(streamingPlatforms && streamingPlatforms.length != 0 && ('streaming_platform' in content)){
+            let foundStreamingPlatform = false;
+            for(let i = 0; i < streamingPlatforms.length; i++){
+                for(let j = 0; j < content.streaming_platform.length; j++){
+                    if(streamingPlatforms[i] == content.streaming_platform[j]){
+                        foundStreamingPlatform = true;
                     }
                 }
-                if(!foundStreamingPlatform) { return false; }
             }
+            if(!foundStreamingPlatform) { return false; }
+        }
+        return true;
+    })
 
-            return true;
-        });
+    //get from database all avg ratings
+    let searchResultsReadQuery = "SELECT review_imdb_key, AVG(review_rating) AS avg_campus_score FROM reviews GROUP BY review_imdb_key"
+    let ourReviews;
+    try{
+        ourReviews = await database.query(searchResultsReadQuery);
+        ourReviews = ourReviews.rows;
+    } catch(e) {
+        console.log("error encountered:");
+        console.log(e);
+        res.status(500).json({
+            message: "error encountered"
+        })
+        next();
+    }
 
-        //get from database all avg ratings
-        let searchResultsReadQuery = "SELECT review_imdb_key, AVG(review_rating) AS avg_campus_score FROM reviews GROUP BY review_imdb_key"
-        let ourMovieReviews;
-        try{
-            ourMovieReviews = await database.query(searchResultsReadQuery);
-        } catch(e) {
-            console.log("error encountered:");
-            console.log(e);
-            res.status(500).json({
-                message: "error encountered"
-            })
-            next();
+    imdbKeyToRating = {}
+    ourReviews.forEach(row => imdbKeyToRating[row.review_imdb_key] = row.avg_campus_score);
+
+    cleanedSearchResults = [];
+    for(let i=0; i < searchResults.length; i++){
+        let imdb_key = null;
+        let title = null;
+        let platforms = null;
+        let rating = null;
+        let popularity = null;
+        let imdb_rating = null;
+
+        if('imdb' in searchResults[i]){
+            imdb_key = searchResults[i].imdb;
         }
 
-        //get movie reviews into usable array format
-        ourMovieReviews = ourMovieReviews.rows;
+        if('title' in searchResults[i]){
+            title = searchResults[i].title;
+        }
 
-        imdbKeyToRating = {}
-        ourMovieReviews.forEach(row => imdbKeyToRating[row.review_imdb_key] = row.avg_campus_score);
+        if('streaming_platform' in searchResults[i]){
+            platforms = searchResults[i].streaming_platform;
+        }
 
-        searchResults.map((movie) => {
-            if(movie.imdb in imdbKeyToRating){
-                movie[constants.RESPONSE_KEYS.OUR_REVIEWS] = imdbKeyToRating[movie.imdb];
-            } else {
-                movie[constants.RESPONSE_KEYS.OUR_REVIEWS] = null;
-            }
-            return movie;
-        });
-        res.status(200).json({
+        if('rating' in searchResults[i]){
+            rating = searchResults[i].rating;
+        }
 
-        })
+        if('popularity' in searchResults[i]){
+            popularity = searchResults[i].popularity;
+        }
 
-    }).catch(error => {
-        console.log("error:");
-        console.log(error);
+        if('vote_average' in searchResults[i]){
+            imdb_rating = searchResults[i].vote_average
+        }
+
+
+        modifiedMovie = {
+            'imdb_key': imdb_key,
+            'title': title,
+            'platforms': platforms,
+            'rating': rating,
+            'popularity': popularity,
+            'imdb_rating': imdb_rating
+        }
+
+        if(imdb_key in imdbKeyToRating){
+            modifiedMovie[constants.RESPONSE_KEYS.OUR_REVIEWS] = imdbKeyToRating[searchResults[i].imdb];
+        } else {
+            modifiedMovie[constants.RESPONSE_KEYS.OUR_REVIEWS] = null;
+        }
+        cleanedSearchResults.push(JSON.stringify(modifiedMovie));
+    }
+
+
+    res.status(200).json({
+        results: cleanedSearchResults
     })
 
 })

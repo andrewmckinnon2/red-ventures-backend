@@ -11,6 +11,6 @@ module.exports = {
         "Hindi" : "hi"
     },
     RESPONSE_KEYS : {
-        OUR_REVIEWS : "college_reviews"
+        OUR_REVIEWS : "college_review"
     }
 }
