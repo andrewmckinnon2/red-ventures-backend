@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./bulma.css" />
+    <link rel="stylesheet" href="custom_style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Shrikhand&display=swap" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+    <script src="./get-analytics.js"></script>
+    <title>Stack Is Back Bitch</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+</head>
+<body>
+        <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <!-- <a class="navbar-item" href="https://bulma.io">
+                                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+                              </a> -->
+        
+                    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                        data-target="navbarBasicExample">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+        
+                <div id="navbarBasicExample" class="navbar-menu">
+                    <div class="navbar-start">
+                        <a href="./index.html" class="navbar-item">
+                            Home
+                        </a>
+        
+                        <a class="navbar-item">
+                            Popular Near Me
+                        </a>
+        
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">
+                                More
+                            </a>
+        
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item">
+                                    About
+                                </a>
+                                <hr class="navbar-divider">
+                                <a class="navbar-item">
+                                    Report an issue
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a id="analyticsbutton" href="./analytics.html" class="button is-light">
+                                    Analytics
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <br><br>
+            <div class="tabs is-medium is-centered">
+                    <ul>
+                      <li id="clicktab" class="is-active"><a>Clicks</a></li>
+                      <li id="searchtab"><a>Searches</a></li>
+                      <li id="reviewtab"><a>Reviews</a></li>
+                    </ul>
+                  </div>
+
+            
+            <div id="clickcharts">
+                    <div id="piechart" style="width: 900px; height: 500px;"></div>
+            </div>
+           
+            <div id="searchcharts" class="noshow">
+            </div>
+            <div id="reviewcharts" class="noshow">
+            </div>
+
+            
+            <!-- banner clicks, reviews on each platform, total clicks for platform, clicks for movies, average rating for movies/shows across platforms, # searches that a platform appears on, # searches for language or rating -->
+            <!-- shows v. movies clicks -->
+</body>
+</html>

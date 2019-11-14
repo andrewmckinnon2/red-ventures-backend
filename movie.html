@@ -13,6 +13,7 @@
     <script src="./config.js"></script>
     <script src="./results.js"></script>
     <script src="./post_review.js"></script>
+    <script src="./get-analytics.js"></script>
     <title>Stack Is Back Bitch</title>
 </head>
 
@@ -61,8 +62,8 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-light">
-                            Log in
+                        <a id="analyticsbutton" href="./analytics.html" class="button is-light">
+                            Analytics
                         </a>
                     </div>
                 </div>
@@ -109,6 +110,7 @@
                     <label class="label">Leave a Review</label>
                     <div class="control">
                         <textarea id="review" class="textarea"></textarea>
+                        <!-- written_review -->
                     </div>
                 </div>
                 <div class="field">
@@ -130,6 +132,7 @@
                 </div>
 
                 <div class="control">
+                    <!-- college_review -->
                     <label><strong>Rating: </strong><span id="current">5</span></label> <br>
                     <span>1</span><input id="slider" type="range" min=1 max=10><span>10</span>
                   </div> <br> 

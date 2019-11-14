@@ -64,7 +64,13 @@ async function search() {
             }
         });
         console.log('axios request should have been sent');
-        return result;
+
+        if (sort != null) {
+            return sortJSON(result, sort);
+        } else {
+            return result;
+        }
+        
     } catch (error) {
         return error;
     }
@@ -104,4 +110,20 @@ async function searchByPlatform(platform) {
     } catch (error) {
         return error;
     }
+}
+
+
+function sortJSON(result, condition) { // vote_average = IMDB, popularity = Popularity
+    if (condition == "IMDB Rating") {
+        result.data.sort(function(a, b) {
+            return a.vote_average > b.vote_average;
+            /* TODO: ascending or descending? */
+        });   
+    } else {
+        result.data.sort(function(a, b) {
+            return a.popularity > b.popularity;
+            /* TODO: ascending or descending? */
+        });
+    }
+    return result;
 }

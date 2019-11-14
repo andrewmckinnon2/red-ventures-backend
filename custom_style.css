@@ -64,3 +64,11 @@ img:hover, .tile.is-child:hover {
 .progress {
     width: 200px;
 }
+
+#analyticsbutton {
+    background-color: #fcbe85;
+}
+
+.noshow {
+    display: none;
+}

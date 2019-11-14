@@ -14,6 +14,7 @@
     <script src="./search.js"></script>
     <script src="./results.js"></script>
     <script src="./get_movie.js"></script>
+    <script src="./get-analytics.js"></script>
     
     <title>Stack Is Back Bitch</title>
 </head>
@@ -63,8 +64,8 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-light">
-                            Log in
+                        <a id="analyticsbutton" href="./analytics.html" class="button is-light">
+                            Analytics
                         </a>
                     </div>
                 </div>
@@ -122,9 +123,8 @@
     <section class="section">
         <div class="container">
             <div class="tile is-ancestor">
-                <div class="tile is-vertical is-8">
+                <div class="tile is-vertical ">
                     <div class="tile">
-                        <!-- FIX FORMATTING :() -->
                         <div class="tile movietile is-parent">
                             <article id="1" class="tile is-child notification ">
                                 <p class="title">Movie Title</p>
