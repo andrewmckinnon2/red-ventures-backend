@@ -6,7 +6,7 @@ const config = require('../config');
 const router = express.Router();
 
 //api endpoint for movie searches
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
 
     //parse out parts of the request
     let imdbId = req.query.imdb_id;
@@ -14,47 +14,81 @@ router.get('/', async (req, res) => {
 
     let database = new Database(config.database);
 
-    //write to db to increment movie_clicks in movie table
-    let movieClicksWriteQuery = 'UPDATE movies SET movie_clicks=movie_clicks+1 WHERE movie_imdb_key=?'
-
-    try{
-        await database.query(movieClicksWriteQuery, [imdbId]);
-    } catch(e) {
-        console.log("error encountered:");
-        console.log(e);
-        res.status(500).json({
-            message: "error encountered"
-        })
-    }
+    let isMovie = true;
 
     //get movie information for this movie from RV api
-    let showResult;
+    let RVShowResult;
     try{
-        showResult = await axios.get(config.getMoviesUrl + "/" + imdbId);
+        RVShowResult = await axios.get(config.getMoviesUrl + "/" + imdbId);
+        RVShowResult = RVShowResult.data;
     } catch(e) {
         console.log("error encountered:");
         console.log(e);
         res.status(500).json({
             message: "error encountered"
         })
+        next();
     }
+    console.log("RVShowResult after movie get");
+    console.log(RVShowResult);
 
-    if(showResult.data != ''){
+    if(RVShowResult == ''){
+        isMovie = false;
         try{
-            showResult = await axios.get(config.getShowsUrl + "/" + imdbId);
+            RVShowResult = await axios.get(config.getShowsUrl + "/" + imdbId);
+            RVShowResult = RVShowResult.data;
         } catch(e) {
             console.log("error encountered:");
             console.log(e);
             res.status(500).json({
                 message: "error encountered"
             })
+            next();
         }
     }
 
-    
-    
+    //write to db to increment movie_clicks in movie table
+    if(isMovie){
+        movieOrShowClicksWriteQuery = 'UPDATE movies SET movie_clicks=movie_clicks+1 WHERE movie_imdb_key=?';
+    } else {
+        movieOrShowClicksWriteQuery = 'UPDATE shows SET show_clicks=show_clicks+1 WHERE movie_imdb_key=?';
+    }
+
+    try{
+        await database.query(movieOrShowClicksWriteQuery, [imdbId]);
+    } catch(e) {
+        console.log("error encountered:");
+        console.log(e);
+        res.status(500).json({
+            message: "error encountered"
+        })
+        next();
+    }
+
+    console.log("RVShowResult:");
+    console.log(RVShowResult);
+
+    /*expected response from this query:
+    {imdb_key, movie_title, platforms[], college_review, imdb_rating, reviews[], summary, production_comps[], release_date, rating, popularity}
+    where reviews is the following:
+    {written_review, school, rating}
+    */
 
     //get from database all the reviews associated with this movie
+    let movieOrShowReadQuery = "SELECT R.review_rating, R.school, R.platform_watched, R.review FROM test.reviews as R Where review_imdb_key = ?";
+
+    let collegePlatformReviews;
+    try{
+        collegePlatformReviews = await databse.query(movieOrShowReadQuery, [imdbId]);
+    } catch(e) {
+        console.log("error occurred:");
+        console.log(e);
+        res.status(500).json({
+            message: "error occurred"
+        })
+        next();
+    }
+
 
 })
 
