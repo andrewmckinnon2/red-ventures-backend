@@ -1,16 +1,49 @@
 $(document).ready(() => {
     $("#submitbutton").on("click", () => {
         console.log("loaded search.js");
-        search();
+        
+        console.log(search().then(function(result) {
+            console.log(result.data.results);
+            localStorage.setItem('search_results', JSON.stringify(result.data.results));
+            
+            // makeMovieTiles(result.data.results);
+            window.location = "./search_results.html";
+            // localStorage.removeItem("")
+        }).catch(function(problem) {
+            console.log(problem);
+        }));
     });
     $("#primepic").on("click", () => {
-        searchByPlatform("prime");
+        console.log(searchByPlatform("amazon_prime").then(function(result) {
+            localStorage.setItem('search_results', JSON.stringify(result.data.results));
+            
+        // makeMovieTiles(result.data.results);
+            window.location = "./search_results.html";
+        }).catch(function(problem) {
+            console.log(problem);
+        }));
     });
     $("#hbopic").on("click", () => {
-        searchByPlatform("hbo");
+        console.log(searchByPlatform("hbo").then(function(result) {
+            localStorage.setItem('search_results', JSON.stringify(result.data.results));
+            
+        // makeMovieTiles(result.data.results);
+            window.location = "./search_results.html";
+        }).catch(function(problem) {
+            console.log(problem);
+        }));
+
     });
     $("#netflixpic").on("click", () => {
-        searchByPlatform("netflix");
+        console.log(searchByPlatform("netflix").then(function(result) {
+            localStorage.setItem('search_results', JSON.stringify(result.data.results));
+            
+        // makeMovieTiles(result.data.results);
+            window.location = "./search_results.html";
+        }).catch(function(problem) {
+            console.log(problem);
+        }));
+
     });
 }); 
 
@@ -84,15 +117,6 @@ async function searchByPlatform(platform) {
         } else {
             URL = devURL;
         }
-        
-        let plats = [];
-        if (platform == "prime") {
-            plats.push("amazon_prime");
-        } else if (platform == "hbo") {
-            plats.push("hbo");
-        } else if (platform == "netflix") {
-            plats.push("netflix")
-        } 
 
         const result = await axios({
             method: 'get',
@@ -100,7 +124,7 @@ async function searchByPlatform(platform) {
             params: {
                 rating: null,
                 language: null,
-                streamingPlatforms: plats, 
+                streamingPlatforms: platform, 
                 searchString: null,
                 sorting: null
             }
@@ -127,3 +151,4 @@ function sortJSON(result, condition) { // vote_average = IMDB, popularity = Popu
     }
     return result;
 }
+

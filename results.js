@@ -7,4 +7,3 @@ $(document).ready(() => {
     $("#slider").on('input', () => {updateSlider();});
 }); 
 
-// loop through all movie panels and add click handlers
