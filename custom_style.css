@@ -72,3 +72,8 @@ img:hover, .tile.is-child:hover {
 .noshow {
     display: none;
 }
+
+.chart {
+    width: 900px; 
+    height: 500px;
+}

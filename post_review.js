@@ -2,7 +2,8 @@ $(document).ready(() => {
     $("#reviewsubmit").on("click", () => {
         console.log("loaded post_review.js");
         review();
-        // location.reload(); to clear form?
+
+        location.reload(); 
     });
 });
 
@@ -19,6 +20,8 @@ async function review() {
         let schl = $("#school").val();
         let rat = $("#slider").val();
         let plat = $("#reviewplatform").val();
+        let id = localStorage.getItem('clicked_movie').substring(1,);
+        //let id = $("#")
 
         // movie_idb_key, email, school, platform, review
         
@@ -27,7 +30,7 @@ async function review() {
             method: 'post',
             url: URL + 'review/',
             params: {
-                movie_imdb_key: 'tt0110912',
+                movie_imdb_key: id,
                 email: eml,
                 school: schl, 
                 platform: plat,

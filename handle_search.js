@@ -34,8 +34,8 @@ function makeMovieTiles() {
                 noreviewormaybethereisone = obj.college_review;
             }
 
-            let html = `<div class="tile column is-one-third movietile is-parent">
-                <article id="${obj.imdb_key}" class="tile is-child notification ">
+            let html = `<div id="${obj.imdb_key}" class="tile column is-one-third movietile is-parent">
+                <article class="tile is-child notification ">
                     <p class="title">${obj.title}</p>
                     <p class="subtitle">Available on: <span>${platformstring}</span></p>
                     <p>Our rating: ${noreviewormaybethereisone}</p>
@@ -45,6 +45,7 @@ function makeMovieTiles() {
     
             let tileid = "#" + obj.imdb_key;
             $(tileid).on("click", () => {
+                localStorage.setItem('clicked_movie', tileid);
                 window.location = "./movie.html";
             });
         }

@@ -1,8 +1,41 @@
 $(document).ready(() => {
+    $("#primepic").on("click", () => {
+        console.log("clicked prime");
+        console.log(search("amazon_prime").then(function(result) {
+            localStorage.setItem('search_results', JSON.stringify(result.data.results));
+            
+        // makeMovieTiles(result.data.results);
+            window.location = "./search_results.html";
+        }).catch(function(problem) {
+            console.log(problem);
+        }));
+    });
+    $("#hbopic").on("click", () => {
+        console.log(search("hbo").then(function(result) {
+            localStorage.setItem('search_results', JSON.stringify(result.data.results));
+            
+        // makeMovieTiles(result.data.results);
+            window.location = "./search_results.html";
+        }).catch(function(problem) {
+            console.log(problem);
+        }));
+    
+    });
+    $("#netflixpic").on("click", () => {
+        console.log(search("netflix").then(function(result) {
+            localStorage.setItem('search_results', JSON.stringify(result.data.results));
+            
+        // makeMovieTiles(result.data.results);
+            window.location = "./search_results.html";
+        }).catch(function(problem) {
+            console.log(problem);
+        }));
+
+    });
     $("#submitbutton").on("click", () => {
         console.log("loaded search.js");
         
-        console.log(search().then(function(result) {
+        console.log(search("").then(function(result) {
             console.log(result.data.results);
             localStorage.setItem('search_results', JSON.stringify(result.data.results));
             
@@ -13,41 +46,11 @@ $(document).ready(() => {
             console.log(problem);
         }));
     });
-    $("#primepic").on("click", () => {
-        console.log(searchByPlatform("amazon_prime").then(function(result) {
-            localStorage.setItem('search_results', JSON.stringify(result.data.results));
-            
-        // makeMovieTiles(result.data.results);
-            window.location = "./search_results.html";
-        }).catch(function(problem) {
-            console.log(problem);
-        }));
-    });
-    $("#hbopic").on("click", () => {
-        console.log(searchByPlatform("hbo").then(function(result) {
-            localStorage.setItem('search_results', JSON.stringify(result.data.results));
-            
-        // makeMovieTiles(result.data.results);
-            window.location = "./search_results.html";
-        }).catch(function(problem) {
-            console.log(problem);
-        }));
-
-    });
-    $("#netflixpic").on("click", () => {
-        console.log(searchByPlatform("netflix").then(function(result) {
-            localStorage.setItem('search_results', JSON.stringify(result.data.results));
-            
-        // makeMovieTiles(result.data.results);
-            window.location = "./search_results.html";
-        }).catch(function(problem) {
-            console.log(problem);
-        }));
-
-    });
+    
 }); 
 
-async function search() {
+async function search(platform) {
+
     try {
         var URL;
         if (isProd) {
@@ -61,15 +64,20 @@ async function search() {
         
         let plats = [];
         
-        if ($("#netflixcheck").prop("checked") == true) {
-            plats.push("netflix");
-        } 
-        if ($("#hbocheck").prop("checked") == true) {
-            plats.push("hbo");
-        } 
-        if ($("#primecheck").prop("checked") == true) {
-            plats.push("amazon_prime");
-        } 
+        if (platform == "") {
+            if ($("#netflixcheck").prop("checked") == true) {
+                plats.push("netflix");
+            } 
+            if ($("#hbocheck").prop("checked") == true) {
+                plats.push("hbo");
+            } 
+            if ($("#primecheck").prop("checked") == true) {
+                plats.push("amazon_prime");
+            } 
+        } else {
+            plats.push(platform);
+        }
+        
         
         let sort = $("#sorting").val();
 
@@ -109,32 +117,36 @@ async function search() {
     }
 }
 
-async function searchByPlatform(platform) {
-    try {
-        var URL;
-        if (isProd) {
-            URL = prodURL;
-        } else {
-            URL = devURL;
-        }
+// async function searchByPlatform(platform) {
+//     console.log("entered searchByPlatform");
+//     try {
+//         var URL;
+//         if (isProd) {
+//             URL = prodURL;
+//         } else {
+//             URL = devURL;
+//         }
 
-        const result = await axios({
-            method: 'get',
-            url: URL + 'search/',
-            params: {
-                rating: null,
-                language: null,
-                streamingPlatforms: platform, 
-                searchString: null,
-                sorting: null
-            }
-        });
-        console.log('axios request should have been sent');
-        return result;
-    } catch (error) {
-        return error;
-    }
-}
+//         const result = await axios({
+//             method: 'get',
+//             url: URL + 'search/',
+//             params: {
+//                 rating: null,
+//                 language: null,
+//                 streamingPlatforms: platform, 
+//                 searchString: null,
+//                 sorting: null
+//             }
+//         });
+//         console.log('axios request should have been sent');
+//         console.log("result after request: " + result);
+//         return result;
+//     } catch (error) {
+//         console.log("caught");
+//         return error;
+
+//     }
+// }
 
 
 function sortJSON(result, condition) { // vote_average = IMDB, popularity = Popularity

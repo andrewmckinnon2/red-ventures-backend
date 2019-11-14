@@ -11,33 +11,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
     <script src = "./axios.js"></script>
     <script src = "./config.js"></script>
-    <script src="./get-analytics.js"></script>
     <title>Stack Is Back Bitch</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
-
-        var options = {
-          title: 'My Daily Activities'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data, options);
-      }
-    </script>
 </head>
 <body>
         <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
@@ -102,17 +77,23 @@
                   </div>
 
             
-            <div id="clickcharts">
-                    <div id="piechart" style="width: 900px; height: 500px;"></div>
+            <div id="clickcharts" class="container chart is-centered">
+                    <div class="container is-centered"  id="bannerClicksPieChart" ></div>
+                    <div class="container is-centered"  id="totalCliksPerPlatform" ></div>
             </div>
            
-            <div id="searchcharts" class="noshow">
+            <div id="searchcharts" class="container noshow chart is-centered">
+                <div class="container is-centered" id="searchesPerLanguageColChart" ></div>
+                <div class="container is-centered"  id="searchesPerRatingColChart" ></div>
             </div>
-            <div id="reviewcharts" class="noshow">
+            <div id="reviewcharts" class="container noshow chart is-centered">
+                <div class="container is-centered"  id="scorePerPlatformColChart" ></div>
+                <div class="container is-centered"  id="reviewsPerPlatformPieChart"></div>
             </div>
 
             
             <!-- banner clicks, reviews on each platform, total clicks for platform, clicks for movies, average rating for movies/shows across platforms, # searches that a platform appears on, # searches for language or rating -->
             <!-- shows v. movies clicks -->
 </body>
+<script src="./get-analytics.js"></script>
 </html>
