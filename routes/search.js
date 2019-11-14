@@ -147,14 +147,18 @@ router.get('/', async (req, res, next) => {
             imdb_rating = searchResults[i].vote_average
         }
 
+        if('original_language' in searchResults[i]){
+            language = searchResults[i].original_language;
+        }
 
         modifiedMovie = {
             'imdb_key': imdb_key,
-            'movie_title': title,
+            'title': title,
             'platforms': platforms,
             'rating': rating,
             'popularity': popularity,
-            'imdb_rating': imdb_rating
+            'imdb_rating': imdb_rating,
+            'language' : language
         }
 
         if(imdb_key in imdbKeyToRating){

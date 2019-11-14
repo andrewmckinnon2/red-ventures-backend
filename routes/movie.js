@@ -51,7 +51,7 @@ router.get('/', async (req, res, next) => {
     if(isMovie){
         movieOrShowClicksWriteQuery = 'UPDATE movies SET movie_clicks=movie_clicks+1 WHERE movie_imdb_key=?';
     } else {
-        movieOrShowClicksWriteQuery = 'UPDATE shows SET show_clicks=show_clicks+1 WHERE movie_imdb_key=?';
+        movieOrShowClicksWriteQuery = 'UPDATE shows SET show_clicks=show_clicks+1 WHERE show_imdb_key=?';
     }
 
     try{
@@ -73,6 +73,7 @@ router.get('/', async (req, res, next) => {
 
     let collegePlatformReviews;
     try{
+        console.log("imdbId: " + imdbId);
         collegePlatformReviews = await database.query(movieOrShowReadQuery, [imdbId]);
     } catch(e) {
         console.log("error occurred:");
@@ -83,8 +84,8 @@ router.get('/', async (req, res, next) => {
         next();
     }
 
-    collegePlatformReviews = collegePlatformReviews.data;
-    collegePlatformReviews.map(review => {
+    collegePlatformReviews = collegePlatformReviews.rows;
+    collegePlatformReviews = collegePlatformReviews.map((review) => {
         return {
             'written_review' : review.review,
             'school' : review.school,
@@ -92,13 +93,20 @@ router.get('/', async (req, res, next) => {
         }
     });
 
+
     let aggregateScore = 0;
     let numReviews = 0;
+    let avgScore;
     collegePlatformReviews.forEach(review => {
         aggregateScore += review.rating;
         numReviews++;
     });
-    let avgScore = aggregateScore / numReviews;
+
+    if(numReviews == 0){
+        avgScore = null;
+    }else {
+        avgScore = aggregateScore / numReviews;
+    }
 
     /*expected response from this query:
     {imdb_key, movie_title, platforms[], college_review, imdb_rating, reviews[], summary, production_comps[], release_date, rating, popularity}
@@ -106,14 +114,64 @@ router.get('/', async (req, res, next) => {
     {written_review, school, rating}
     */
 
-    let responseObject = {};
-    let imdb_key = null;
-    let movie_title = null;
+    //object to be returned to client with necesary data
+    let responseObject = {}; 
     
+    //RV provided information
+    let imdb_key = null; let movie_title = null; let platforms = [];
+    let imdb_rating = null; let summary = null; let production_comps = null; let rating = null; let popularity = null;
+
+    //information from our database
+    let college_review = null; let reviews = [];
+
     if(('imdb' in RVShowResult)){
-        responseObject
+        imdb_key = RVShowResult.imdb;
+    }
+    if(('title' in RVShowResult)){
+        movie_title = RVShowResult.title;
+    }
+    if(('streaming_platform' in RVShowResult)){
+        platforms = RVShowResult.streaming_platform;
+    }
+    if(('vote_average' in RVShowResult)){
+        imdb_rating = RVShowResult.vote_average;
+    }
+    if(('overview' in RVShowResult)){
+        summary = RVShowResult.overview;
+    }
+    if(('production_companies' in RVShowResult)){
+        production_comps = RVShowResult.production_comps;
+    }
+    if(('rating' in RVShowResult)){
+        rating = RVShowResult.rating;
+    }
+    if(('popularity' in RVShowResult)){
+        popularity = RVShowResult.popularity;
     }
 
+    college_review = avgScore;
+    reviews = collegePlatformReviews;
+
+    responseObject = {
+        'imdb_key' : imdb_key,
+        'movie_title': movie_title,
+        'platforms' : platforms,
+        'imdb_rating' : imdb_rating,
+        'summary' : summary,
+        'production_comps' : production_comps,
+        'rating' : rating,
+        'popularity' : popularity,
+        'college_review' : college_review,
+        'reviews' : reviews
+    }
+
+    console.log("value of responseObject after processing:");
+    console.log(responseObject);
+
+    console.log("right before res.status.json");
+    res.status(200).json({
+        results : responseObject
+    })
 })
 
 module.exports = router;
