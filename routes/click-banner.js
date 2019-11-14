@@ -6,7 +6,8 @@ const config = require('../config');
 const router = express.Router();
 
 //api endpoint for banner clicks
-router.get('/', async (req, res) => {
+router.put('/', async (req, res) => {
+    console.log("request recieved");
     
     //parse out request param
     let platform = req.body.platform;
