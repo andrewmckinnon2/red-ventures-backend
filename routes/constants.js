@@ -10,6 +10,11 @@ module.exports = {
         "Korean" : "ko",
         "Hindi" : "hi"
     },
+    PLATFORM_MAPPINGS : {
+        "Amazon Prime" : 'amazon_prime',
+        "Netflix" : 'netflix',
+        "HBO" : 'hbo'
+    },
     RESPONSE_KEYS : {
         OUR_REVIEWS : "college_review"
     }

@@ -31,7 +31,7 @@ router.put('/', async (req, res) => {
 
     //successful response 
     res.status(200).json({
-        message: "successful click"
+        message: "success"
     })
 })
 
