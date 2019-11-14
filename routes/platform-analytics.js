@@ -7,7 +7,7 @@ const router = express.Router();
 
 //api endpoint for analytics on the platform requested
 router.get('/', async (req, res) => {
-    console.log("inside of platform-analytics handler");
+    console.log("platfomr-analytics request recieved");
 
     //parse out param
     let streamingPlatform = req.body.streaming_platform;

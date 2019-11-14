@@ -17,8 +17,7 @@ router.post('/', async (req, res) => {
     let review = req.query.review;
     let rating = req.query.rating;
 
-    console.log("req.query");
-    console.log(req.query);
+    console.log("review request recieved");
 
     let database = new Database(config.database);
 

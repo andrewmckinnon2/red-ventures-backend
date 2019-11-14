@@ -8,7 +8,7 @@ const router = express.Router();
 
 //api endpoint for movie searches
 router.get('/', async (req, res, next) => {
-    console.log("inside of search.js");
+    console.log("search request recieved");
 
     //parse out parts of the request
     let rating = req.query.rating; //rating - pg-13, R, etc.
@@ -40,8 +40,6 @@ router.get('/', async (req, res, next) => {
         })
         next();
     }
-    console.log("result of database query:");
-    console.log(result);
 
     //get movie search results from their api
     let movieSearchResults;

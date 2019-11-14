@@ -7,12 +7,10 @@ const router = express.Router();
 
 //api endpoint for banner clicks
 router.put('/', async (req, res) => {
-    console.log("request recieved");
+    console.log("click-banner request recieved");
     
     //parse out request param
     let platform = req.query.platform;
-    console.log("platform:");
-    console.log(platform);
 
     let database = new Database(config.database);
 

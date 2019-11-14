@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
 
     //parse out parts of the request
     let imdbId = req.query.imdb_id;
-    console.log('imdbId: ' + imdbId);
+    console.log("movie request recieved");
 
     let database = new Database(config.database);
 
@@ -29,8 +29,6 @@ router.get('/', async (req, res, next) => {
         })
         next();
     }
-    console.log("RVShowResult after movie get");
-    console.log(RVShowResult);
 
     if(RVShowResult == ''){
         isMovie = false;
@@ -64,9 +62,6 @@ router.get('/', async (req, res, next) => {
         })
         next();
     }
-
-    console.log("RVShowResult:");
-    console.log(RVShowResult);
 
     //get from database all the reviews associated with this movie
     let movieOrShowReadQuery = "SELECT R.review_rating, R.school, R.platform_watched, R.review FROM reviews as R Where review_imdb_key = ?";
@@ -107,12 +102,6 @@ router.get('/', async (req, res, next) => {
     }else {
         avgScore = aggregateScore / numReviews;
     }
-
-    /*expected response from this query:
-    {imdb_key, movie_title, platforms[], college_review, imdb_rating, reviews[], summary, production_comps[], release_date, rating, popularity}
-    where reviews is the following:
-    {written_review, school, rating}
-    */
 
     //object to be returned to client with necesary data
     let responseObject = {}; 
@@ -165,10 +154,6 @@ router.get('/', async (req, res, next) => {
         'reviews' : reviews
     }
 
-    console.log("value of responseObject after processing:");
-    console.log(responseObject);
-
-    console.log("right before res.status.json");
     res.status(200).json({
         results : responseObject
     })
