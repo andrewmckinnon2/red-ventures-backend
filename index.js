@@ -19,6 +19,9 @@ app.use('/review', reviewRouter);
 app.use('/streaming-platform-analytics', platformAnalyticsRouter);
 
 
+//serve front end code
+app.use('/static', express.static('public'));
+
 
 var serverPort = 3000;
 var serverIpAddress = '127.0.0.1';

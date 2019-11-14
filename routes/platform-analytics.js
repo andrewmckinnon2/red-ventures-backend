@@ -172,8 +172,6 @@ router.get('/', async (req, res) => {
          responseObject.searches_per_rating[row.search_rating] = row.num_searches;
      })
 
-     console.log('responseObject after processing:');
-     console.log(responseObject);
      res.status(200).json({
          results: responseObject
      })
