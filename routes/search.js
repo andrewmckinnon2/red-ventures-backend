@@ -150,7 +150,7 @@ router.get('/', async (req, res, next) => {
 
         modifiedMovie = {
             'imdb_key': imdb_key,
-            'title': title,
+            'movie_title': title,
             'platforms': platforms,
             'rating': rating,
             'popularity': popularity,

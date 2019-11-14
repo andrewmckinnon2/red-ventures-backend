@@ -68,18 +68,12 @@ router.get('/', async (req, res, next) => {
     console.log("RVShowResult:");
     console.log(RVShowResult);
 
-    /*expected response from this query:
-    {imdb_key, movie_title, platforms[], college_review, imdb_rating, reviews[], summary, production_comps[], release_date, rating, popularity}
-    where reviews is the following:
-    {written_review, school, rating}
-    */
-
     //get from database all the reviews associated with this movie
-    let movieOrShowReadQuery = "SELECT R.review_rating, R.school, R.platform_watched, R.review FROM test.reviews as R Where review_imdb_key = ?";
+    let movieOrShowReadQuery = "SELECT R.review_rating, R.school, R.platform_watched, R.review FROM reviews as R Where review_imdb_key = ?";
 
     let collegePlatformReviews;
     try{
-        collegePlatformReviews = await databse.query(movieOrShowReadQuery, [imdbId]);
+        collegePlatformReviews = await database.query(movieOrShowReadQuery, [imdbId]);
     } catch(e) {
         console.log("error occurred:");
         console.log(e);
@@ -89,6 +83,36 @@ router.get('/', async (req, res, next) => {
         next();
     }
 
+    collegePlatformReviews = collegePlatformReviews.data;
+    collegePlatformReviews.map(review => {
+        return {
+            'written_review' : review.review,
+            'school' : review.school,
+            'rating' : review.review_rating
+        }
+    });
+
+    let aggregateScore = 0;
+    let numReviews = 0;
+    collegePlatformReviews.forEach(review => {
+        aggregateScore += review.rating;
+        numReviews++;
+    });
+    let avgScore = aggregateScore / numReviews;
+
+    /*expected response from this query:
+    {imdb_key, movie_title, platforms[], college_review, imdb_rating, reviews[], summary, production_comps[], release_date, rating, popularity}
+    where reviews is the following:
+    {written_review, school, rating}
+    */
+
+    let responseObject = {};
+    let imdb_key = null;
+    let movie_title = null;
+    
+    if(('imdb' in RVShowResult)){
+        responseObject
+    }
 
 })
 
