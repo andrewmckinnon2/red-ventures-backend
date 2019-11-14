@@ -39,7 +39,19 @@ async function search() {
         } 
         
         let sort = $("#sorting").val();
+
+        if (rat == "Rating") {
+            rat = null;
+        }
+        if (lang == "Language") {
+            lang = null;
+        }
+        if (sort == "Sort by...") {
+            sort = null;
+        }
+        
         console.log('inside of try block w/ axios request');
+        
         const result = await axios({
             method: 'get',
             url: URL + 'search/',
