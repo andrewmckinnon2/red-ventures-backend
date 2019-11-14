@@ -1,6 +1,6 @@
 $(document).ready(() => {
-    $("#primepic").on("click", () => {
-        console.log("clicked prime");
+    $("#primepic").on("click", async () => {
+        await bannerClick("amazon_prime");
         console.log(search("amazon_prime").then(function(result) {
             localStorage.setItem('search_results', JSON.stringify(result.data.results));
             
@@ -10,7 +10,8 @@ $(document).ready(() => {
             console.log(problem);
         }));
     });
-    $("#hbopic").on("click", () => {
+    $("#hbopic").on("click", async () => {
+        await bannerClick("hbo");
         console.log(search("hbo").then(function(result) {
             localStorage.setItem('search_results', JSON.stringify(result.data.results));
             
@@ -21,7 +22,8 @@ $(document).ready(() => {
         }));
     
     });
-    $("#netflixpic").on("click", () => {
+    $("#netflixpic").on("click", async () => {
+        await bannerClick("netflix");
         console.log(search("netflix").then(function(result) {
             localStorage.setItem('search_results', JSON.stringify(result.data.results));
             
@@ -32,8 +34,9 @@ $(document).ready(() => {
         }));
 
     });
-    $("#submitbutton").on("click", () => {
+    $("#submitbutton").on("click", async () => {
         console.log("loaded search.js");
+        await
         
         console.log(search("").then(function(result) {
             console.log(result.data.results);
@@ -164,3 +167,26 @@ function sortJSON(result, condition) { // vote_average = IMDB, popularity = Popu
     return result;
 }
 
+async function bannerClick(platform) {
+    try {
+        var URL;
+        if (isProd) {
+            URL = prodURL;
+        } else {
+            URL = devURL;
+        }
+        
+        console.log('inside of try block w/ axios request');
+        const result = await axios({
+            method: 'put',
+            url: URL + 'click-banner/',
+            params: {
+                platform: platform,
+            }
+        });
+        console.log('axios request should have been sent');
+        return result;
+    } catch (error) {
+        return error;
+    }
+}
