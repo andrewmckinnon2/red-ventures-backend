@@ -9,24 +9,53 @@ const router = express.Router();
 router.get('/', async (req, res) => {
 
     //parse out parts of the request
-    let imdbId = req.body.imdb_id;
+    let imdbId = req.query.imdb_id;
+    console.log('imdbId: ' + imdbId);
 
     let database = new Database(config.database);
 
     //write to db to increment movie_clicks in movie table
+    let movieClicksWriteQuery = 'UPDATE movies SET movie_clicks=movie_clicks+1 WHERE movie_imdb_key=?'
+
+    try{
+        await database.query(movieClicksWriteQuery, [imdbId]);
+    } catch(e) {
+        console.log("error encountered:");
+        console.log(e);
+        res.status(500).json({
+            message: "error encountered"
+        })
+    }
+
+    //get movie information for this movie from RV api
+    let showResult;
+    try{
+        showResult = await axios.get(config.getMoviesUrl + "/" + imdbId);
+    } catch(e) {
+        console.log("error encountered:");
+        console.log(e);
+        res.status(500).json({
+            message: "error encountered"
+        })
+    }
+
+    if(showResult.data != ''){
+        try{
+            showResult = await axios.get(config.getShowsUrl + "/" + imdbId);
+        } catch(e) {
+            console.log("error encountered:");
+            console.log(e);
+            res.status(500).json({
+                message: "error encountered"
+            })
+        }
+    }
+
+    
+    
 
     //get from database all the reviews associated with this movie
 
-    //get movie information for this movie from RV api
-    axios.get(config.getMoviesUrl + "/" + imdbId)
-    .then(response => {
-
-        //join data from RV and our database to make response
-
-    }).catch(error => {
-        console.log("error:");
-        console.log(error);
-    })
 })
 
 module.exports = router;

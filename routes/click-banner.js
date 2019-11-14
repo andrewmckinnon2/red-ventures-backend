@@ -10,21 +10,28 @@ router.put('/', async (req, res) => {
     console.log("request recieved");
     
     //parse out request param
-    let platform = req.body.platform;
+    let platform = req.query.platform;
+    console.log("platform:");
+    console.log(platform);
 
     let database = new Database(config.database);
 
     //write click to database
+    let streamingPlatformBannerWriteQuery = 'UPDATE streaming_platforms_banner SET platform_banner_clicks = platform_banner_clicks + 1 WHERE  platform_name = ?'
 
-    //get from database the ratings associated with this platform
+    try{
+        await database.query(streamingPlatformBannerWriteQuery, [platform]);
+    } catch(e) {
+        console.log("error encountered:");
+        console.log(e);
+        res.status(500).json({
+            message: "error encountered"
+        })
+    }
 
-    //get results from RV api
-    axios.get(config.getMoviesUrl)
-    .then(response => {
-
-    }).catch(error => {
-        console.log("error:");
-        console.log(error);
+    //successful response 
+    res.status(200).json({
+        message: "successful click"
     })
 })
 
