@@ -154,7 +154,7 @@ router.get('/', async (req, res, next) => {
 
     responseObject = {
         'imdb_key' : imdb_key,
-        'movie_title': movie_title,
+        'title': movie_title,
         'platforms' : platforms,
         'imdb_rating' : imdb_rating,
         'summary' : summary,
