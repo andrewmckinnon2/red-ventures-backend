@@ -140,7 +140,7 @@ router.get('/', async (req, res, next) => {
         summary = RVShowResult.overview;
     }
     if(('production_companies' in RVShowResult)){
-        production_comps = RVShowResult.production_comps;
+        production_comps = RVShowResult.production_companies;
     }
     if(('rating' in RVShowResult)){
         rating = RVShowResult.rating;
